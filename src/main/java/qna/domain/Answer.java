@@ -8,6 +8,9 @@ import javax.persistence.*;
 
 @Entity
 public class Answer extends AbstractEntity {
+
+    private static final String CAN_NOT_DELETE_ANSWER = "다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.";
+
     @ManyToOne(optional = false)
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_answer_writer"))
     private User writer;
@@ -77,7 +80,7 @@ public class Answer extends AbstractEntity {
 
     private void validateAuthority(User loginUser) throws CannotDeleteException {
         if (!this.isOwner(loginUser)) {
-            throw new CannotDeleteException("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
+            throw new CannotDeleteException(CAN_NOT_DELETE_ANSWER);
         }
     }
 
